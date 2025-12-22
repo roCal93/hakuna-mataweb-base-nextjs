@@ -1,0 +1,135 @@
+/**
+ * Types TypeScript Strapi pour Next.js
+ * 
+ * ⚠️  FICHIER AUTO-GÉNÉRÉ - NE PAS MODIFIER
+ * 
+ * Ce fichier est synchronisé depuis strapi-base/types/strapi-types.d.ts
+ * Pour mettre à jour:
+ *   1. Depuis strapi-base: npm run generate:types
+ *   2. Depuis strapi-base: npm run sync:types
+ *   
+ * Ou depuis nextjs-base: npm run sync:types
+ */
+
+// ============================================================================
+// TYPES DE BASE STRAPI
+// ============================================================================
+
+export type StrapiID = number;
+export type StrapiDateTime = string;
+export type StrapiFileUrl = string;
+export type StrapiJSON = Record<string, unknown>;
+
+export interface StrapiMedia {
+  id: StrapiID;
+  url: StrapiFileUrl;
+  mime?: string;
+  alternativeText?: string | null;
+  caption?: string | null;
+  width?: number;
+  height?: number;
+  formats?: {
+    thumbnail?: StrapiMediaFormat;
+    small?: StrapiMediaFormat;
+    medium?: StrapiMediaFormat;
+    large?: StrapiMediaFormat;
+  };
+  [key: string]: unknown;
+}
+
+export interface StrapiMediaFormat {
+  url: StrapiFileUrl;
+  width: number;
+  height: number;
+  mime: string;
+  [key: string]: unknown;
+}
+
+export interface StrapiBlock {
+  type: string;
+  children?: Array<{
+    type: string;
+    text?: string;
+    [key: string]: unknown;
+  }>;
+  [key: string]: unknown;
+}
+
+// ============================================================================
+// TYPES D'ENVELOPPE STRAPI V5
+// ============================================================================
+
+// Strapi v5 : les données sont retournées directement (plus d'attributes)
+export interface StrapiEntity {
+  id: StrapiID;
+  documentId: string;
+}
+
+export interface StrapiResponse<T> {
+  data: (T & StrapiEntity) | null;
+  meta: Record<string, unknown>;
+}
+
+export interface StrapiCollectionResponse<T> {
+  data: Array<T & StrapiEntity>;
+  meta: {
+    pagination?: {
+      page: number;
+      pageSize: number;
+      pageCount: number;
+      total: number;
+    };
+  };
+}
+
+export interface StrapiErrorResponse {
+  error: {
+    status: number;
+    name: string;
+    message: string;
+    details?: Record<string, unknown>;
+  };
+}
+
+// ============================================================================
+// CONTENT TYPES
+// ============================================================================
+
+/**
+ * card
+ */
+export interface Card {
+  title: string;
+  description?: StrapiBlock[];
+  image?: StrapiMedia;
+}
+export type CardResponse = StrapiResponse<Card>;
+export type CardCollectionResponse = StrapiCollectionResponse<Card>;
+
+/**
+ * page
+ */
+export interface Page {
+  title: string;
+  slug: string;
+  heroContent?: StrapiBlock[];
+  sections?: (Section & StrapiEntity)[];
+  seoTitle?: string;
+  seoDescription?: StrapiBlock[];
+  seoImage?: StrapiMedia;
+}
+export type PageResponse = StrapiResponse<Page>;
+export type PageCollectionResponse = StrapiCollectionResponse<Page>;
+
+/**
+ * section
+ */
+export interface Section {
+  title: string;
+  content: StrapiBlock[];
+  image?: StrapiMedia;
+  order: number;
+  reverse?: boolean;
+}
+export type SectionResponse = StrapiResponse<Section>;
+export type SectionCollectionResponse = StrapiCollectionResponse<Section>;
