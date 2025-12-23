@@ -57,7 +57,12 @@ export async function generateStaticParams() {
 export default async function DynamicPage({ params }: Params) {
   // Dans Next.js 15+, params est une Promise
   const { slug } = await params
-  
+
+  // Redirige vers 404 si le slug est 'home'
+  if (slug === 'home') {
+    notFound()
+  }
+
   // Récupérer la page par slug avec ses sections
   const pageRes: PageCollectionResponse = await fetchAPI(
     `/pages?filters[slug][$eq]=${slug}&populate=sections.image`

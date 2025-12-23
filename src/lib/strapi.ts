@@ -22,6 +22,7 @@ export async function fetchAPI<T = unknown>(
         Authorization: `Bearer ${STRAPI_TOKEN}`,
       }),
     },
+    cache: 'no-store',
     ...options,
   })
 
