@@ -4,7 +4,6 @@
  */
 
 import type {
-  StrapiEntity,
   StrapiResponse,
   StrapiCollectionResponse,
   StrapiErrorResponse,

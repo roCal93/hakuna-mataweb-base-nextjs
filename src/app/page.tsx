@@ -7,7 +7,7 @@ import { PageCollectionResponse, SectionCollectionResponse } from '@/types/strap
 export default async function Home() {
   // Récupérer la page principale
   const pageRes: PageCollectionResponse = await fetchAPI('/pages?populate=*')
-  const page = pageRes.data[0]
+  const page = pageRes?.data?.[0]
 
   // Récupérer les sections
   const sectionsRes: SectionCollectionResponse = await fetchAPI('/sections?populate=*&sort=order:asc')
@@ -15,8 +15,26 @@ export default async function Home() {
 
   // Extract plain text from Strapi blocks
   type StrapiBlock = { children?: { text?: string }[] }[]
-  const title = typeof page.title === 'string' ? page.title : ((page.title as StrapiBlock)?.[0]?.children?.[0]?.text || '')
-  const subtitle = typeof page.heroContent === 'string' ? page.heroContent : ((page.heroContent as StrapiBlock)?.[0]?.children?.[0]?.text || '')
+  const title = page
+    ? (typeof page.title === 'string'
+        ? page.title
+        : ((page.title as StrapiBlock)?.[0]?.children?.[0]?.text || ''))
+    : 'Page non trouvée'
+  const subtitle = page
+    ? (typeof page.heroContent === 'string'
+        ? page.heroContent
+        : ((page.heroContent as StrapiBlock)?.[0]?.children?.[0]?.text || ''))
+    : ''
+
+  if (!page) {
+    return (
+      <Layout>
+        <div style={{ color: 'red', padding: 32, textAlign: 'center' }}>
+          Erreur : aucune page d'accueil trouvée dans Strapi.
+        </div>
+      </Layout>
+    )
+  }
 
   return (
     <Layout>
