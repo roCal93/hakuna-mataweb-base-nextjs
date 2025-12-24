@@ -117,6 +117,7 @@ export interface Page {
   seoTitle?: string;
   seoDescription?: StrapiBlock[];
   seoImage?: StrapiMedia;
+  noIndex?: boolean;
 }
 export type PageResponse = StrapiResponse<Page>;
 export type PageCollectionResponse = StrapiCollectionResponse<Page>;
