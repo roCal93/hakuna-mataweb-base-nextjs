@@ -5,10 +5,10 @@ type FetchOptions = RequestInit & {
   cache?: RequestCache
 }
 
-// Fonction utilitaire Strapi v5 avec gestion du draft et du token preview
+// Fonction utilitaire Strapi v5 avec gestion du draft, du preview token et de la locale
 export async function fetchAPI<T = unknown>(
   path: string,
-  { draft = false, ...options }: { draft?: boolean } & FetchOptions = {}
+  { draft = false, locale, ...options }: { draft?: boolean; locale?: string } & FetchOptions = {}
 ): Promise<T> {
   if (!STRAPI_URL) {
     throw new Error('STRAPI URL manquante')
@@ -29,6 +29,12 @@ export async function fetchAPI<T = unknown>(
     url += url.includes('?') ? '&publicationState=preview&status=draft' : '?publicationState=preview&status=draft'
   } else if (STRAPI_TOKEN) {
     headers.Authorization = `Bearer ${STRAPI_TOKEN}`
+  }
+
+  // Locale: si fournie, ajouter le paramètre locale
+  if (locale) {
+    const sep = url.includes('?') ? '&' : '?'
+    url += `${sep}locale=${encodeURIComponent(locale)}`
   }
 
   const res = await fetch(url, {
