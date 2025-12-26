@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 
 interface LangSetterProps {
   lang: string
 }
 
 export function LangSetter({ lang }: LangSetterProps) {
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.lang = lang
   }, [lang])
 

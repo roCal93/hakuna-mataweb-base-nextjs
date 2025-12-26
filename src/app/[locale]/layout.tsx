@@ -1,7 +1,5 @@
 import React from 'react'
-import { notFound } from 'next/navigation'
-import { locales, type Locale } from '@/lib/locales'
-import { LangSetter } from '@/components/LangSetter'
+import { LangSetter } from '@/components/locale'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,9 +13,8 @@ interface LocaleLayoutProps {
 export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
   const { locale } = await params
 
-  if (!locales.includes(locale as Locale)) {
-    notFound()
-  }
+  // Note: Locale validation is handled in individual pages/components
+  // to allow the 404 page to render properly
 
   return (
     <>

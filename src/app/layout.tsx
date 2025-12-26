@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { cookies, headers } from 'next/headers'
+import { defaultLocale } from '@/lib/locales'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,13 +20,35 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let locale = defaultLocale
+
+  try {
+    const cookieStore = await cookies()
+    const cookieLocale = cookieStore.get('locale')?.value
+    if (cookieLocale === "fr" || cookieLocale === "en") {
+      locale = cookieLocale
+    } else {
+      locale = defaultLocale
+    }
+  } catch {
+    // Fallback: parse header cookie string if cookies() is unavailable
+    try {
+      const cookieHeader = (await headers()).get('cookie') ?? ''
+      const match = cookieHeader.match(/(?:^|; )locale=([^;]+)/)
+      const parsedLocale = match ? decodeURIComponent(match[1]) : defaultLocale;
+      locale = (parsedLocale === "fr" || parsedLocale === "en") ? parsedLocale : defaultLocale;
+    } catch {
+      locale = defaultLocale
+    }
+  }
+
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
