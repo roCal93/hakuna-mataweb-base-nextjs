@@ -102,6 +102,7 @@ export interface Card {
   title: string;
   description?: StrapiBlock[];
   image?: StrapiMedia;
+  locale?: string;
 }
 export type CardResponse = StrapiResponse<Card>;
 export type CardCollectionResponse = StrapiCollectionResponse<Card>;
@@ -118,6 +119,7 @@ export interface Page {
   seoDescription?: StrapiBlock[];
   seoImage?: StrapiMedia;
   noIndex?: boolean;
+  locale?: string;
 }
 export type PageResponse = StrapiResponse<Page>;
 export type PageCollectionResponse = StrapiCollectionResponse<Page>;
@@ -131,6 +133,7 @@ export interface Section {
   image?: StrapiMedia;
   order: number;
   reverse?: boolean;
+  locale?: string;
 }
 export type SectionResponse = StrapiResponse<Section>;
 export type SectionCollectionResponse = StrapiCollectionResponse<Section>;

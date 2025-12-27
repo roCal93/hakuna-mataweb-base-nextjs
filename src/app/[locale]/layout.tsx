@@ -1,5 +1,5 @@
 import React from 'react'
-import { LangSetter } from '@/components/locale'
+import { LangSetter, LanguageSwitcher } from '@/components/locale'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,6 +19,9 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   return (
     <>
       <LangSetter lang={locale} />
+      <header style={{ padding: 20 }}>
+        <LanguageSwitcher />
+      </header>
       {children}
     </>
   )

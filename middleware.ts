@@ -34,6 +34,8 @@ export function middleware(req: NextRequest) {
       res.headers.set('set-cookie', cookieValue)
     }
 
+
+
     return res
   } catch (err) {
     return NextResponse.next()

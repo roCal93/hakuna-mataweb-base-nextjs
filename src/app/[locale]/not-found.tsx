@@ -1,21 +1,63 @@
-import { Layout } from '@/components/layout'
+'use client'
+
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 export default function NotFound() {
+  const [lang, setLang] = useState<'fr' | 'en' | undefined>(undefined)
+
+  useEffect(() => {
+    try {
+      const docLang = document.documentElement.lang
+      if (docLang === 'en' || docLang === 'fr') {
+        setTimeout(() => setLang(docLang as 'en' | 'fr'), 0)
+        return
+      }
+
+      const parts = window.location.pathname.split('/').filter(Boolean)
+      if (parts[0] === 'en' || parts[0] === 'fr') {
+        setTimeout(() => setLang(parts[0] as 'en' | 'fr'), 0)
+      }
+    } catch {
+      // noop
+    }
+  }, [])
+
   return (
-    <Layout>
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">404</h1>
-          <p className="text-xl text-gray-600 mb-8">Page not found</p>
-          <Link
-            href="/"
-            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Go home
-          </Link>
-        </div>
+    <main
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        padding: '2rem',
+      }}
+      aria-labelledby="notfound-title"
+    >
+      <h1 id="notfound-title" style={{ fontSize: '3rem', marginBottom: '1rem' }}>
+        404
+      </h1>
+
+      <p style={{ marginBottom: '1.5rem', color: '#374151' }}>
+        {!lang ? "Cette page n'existe pas. / This page doesn't exist." : lang === 'en' ? "This page doesn't exist." : 'Cette page n\'existe pas.'}
+      </p>
+
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Link
+          href={`/${lang || 'fr'}`}
+          style={{
+            padding: '12px 24px',
+            background: '#000',
+            color: '#fff',
+            borderRadius: '6px',
+            textDecoration: 'none',
+          }}
+        >
+          {lang === 'en' ? 'Home' : "Retour à l’accueil"}
+        </Link>
       </div>
-    </Layout>
+    </main>
   )
 }

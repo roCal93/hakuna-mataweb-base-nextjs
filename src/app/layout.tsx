@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
 };
 
+import DevPerfProtector from '@/components/dev/DevPerfProtector'
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -52,6 +54,8 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Dev-only protective wrapper to avoid dev tooling throwing on performance.measure */}
+        <DevPerfProtector />
         {children}
       </body>
     </html>
